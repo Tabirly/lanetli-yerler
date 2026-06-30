@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Kaymakçalan Zirvesi (Ölüm Cephesi)","Manastır (Bitola)","Makedonya","Birinci Dünya Savaşı'nın en kanlı cephelerinden biri olan ve on binlerce askerin donarak veya top ateşiyle parçalanarak can verdiği bu sarp dağ zirvesi. Sisli gecelerde toprağa sinmiş o devasa savaş travmasını, rüzgara karışan bedensiz çığlıkları ve arafta kalmış askerlerin o paslı, ağır ölüm frekansını göğsünüzde hissedersiniz.",5"Kurşunlu Han Zindanları (Kuršumli An)","Üsküp","Makedonya","Osmanlı döneminde kervansaray olmasının yanı sıra ağır suçluların hapsedildiği karanlık bir zindan olarak da kullanılan bu tarihi taş yapı. Işığın girmediği alt odalarda gezinirken, zincire vurulan esirlerin o çaresiz iniltilerini duyduğunuzu sanır, taş duvarlara sinmiş olan o yoğun, klostrofobik acı enerjisiyle nefessiz kalırsınız.",4"Kokino Megalitik Gözlemevi","Kumanova","Makedonya","Binlerce yıl öncesinin pagan ritüellerine ve gökyüzü ibadetlerine ev sahipliği yapan bu kadim kaya kompleksi. Dünyanın en eski gözlemevlerinden biri olan bu zirvede, özellikle gece yarısı devasa bir astral portal açılır; eski tanrılara sunulan adakların ve şamanik transların o ezici, ilkel enerjisi auranızı sarsar.",5"Matka Kanyonu ve Vrelo Mağarası","Üsküp","Makedonya","Görkemli kanyonun derinliklerinde yer alan ve sonu hala bulunamayan bu zifiri karanlık yeraltı su mağarası. Kadim su ruhlarının (elementallerin) yuvası olduğuna inanılan bu derinliklerde yankılanan su damlaları, zihninizde hipnotik fısıltılara dönüşür; o yutucu ve melankolik su enerjisi sizi yavaşça karanlığa çekmek ister.",4"Bogomila Dağları ve Mağaraları","Çaşka","Makedonya","Orta Çağ'da kilise tarafından sapkın (heretik) ilan edilip acımasızca avlanan Bogomillerin sığındığı ve katledildiği bu ıssız dağlar. Mağaraların derinliklerinde, diri diri yakılan veya kılıçtan geçirilen bu ezoterik topluluğun o dışlayıcı, sırlarla dolu ve kederli frekansı, ziyaretçilerin zihinsel kalkanlarını anında yıkar.",5"Marko'nun Kuleleri (Markovi Kuli)","Pirlepe (Prilep)","Makedonya","Devasa ve tuhaf şekilli kayalıkların üzerine inşa edilmiş, sayısız kanlı kuşatmaya sahne olan bu efsanevi Orta Çağ kalesi. Gece çöktüğünde kayaların arasından esen rüzgarın kılıç seslerine dönüştüğü, düşen savaşçıların o agresif ve ilkel koruma enerjisinin kaleyi hala devasa bir astral kalkanla sardığı hissedilir.",4"Terk Edilmiş Jidimirci Köyü","Köprülü (Veles)","Makedonya","Karanlık batıl inançlar ve açıklanamayan paranormal olaylar (poltergeist) yüzünden halkı tarafından tamamen terk edilen bu hayalet köy. Çürüyen ahşap evlerin ve boş sokakların arasında dolaşırken, doğanın ve alt boyut varlıklarının alanı geri alışına şahit olur; o ağır, izleyici ve tekinsiz yalnızlık enerjisiyle ürperirsiniz.",3"Ohri Gölü (Su Altı Mezarlıkları)","Ohri","Makedonya","Avrupa'nın en eski ve en derin göllerinden biri olan Ohri'nin karanlık suları, binlerce yıllık antik yerleşimleri ve sayısız boğulma vakasını yutmuştur. Göle gece bakıldığında, suyun derinliklerinden yükselen o kadim, ezici kederi ve zamanı donduran o hipnotik, yutucu ölüm frekansını tüm çakralarınızda hissedersiniz.",4"Heraclea Lyncestis Harabeleri","Manastır (Bitola)","Makedonya","Antik Roma döneminde gladyatör dövüşlerine ve vahşi hayvan infazlarına sahne olan bu kadim amfitiyatro ve şehir kalıntıları. Yıkıntılar arasında durduğunuzda, kana doymuş toprağın yaydığı o paslı şiddet enerjisi ve binlerce yıl önce burada vahşice parçalananların feryatları aklınızın sınırlarını zorlar.",4"Üsküp Kalesi (Kale)","Üsküp","Makedonya","1963'teki büyük depremle yıkıma uğrayan ve asırlar boyunca şehrin kanlı savunma merkezi olan bu yüksek tepe. Depremde bir anda enkaz altında kalanların ani ölüm travması ve asırlar önceki askerlerin o ağır savaş frekansı, kalenin surlarına öylesine kazınmıştır ki, gece yarısı auranıza boğucu bir ağırlık çöker.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Makedonya kayitlari eklendi.")
