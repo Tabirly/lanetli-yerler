@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Hoa Lo Hapishanesi (Hanoi Hilton)","Hanoi","Vietnam","Önce Fransız sömürgecilerin, ardından Kuzey Vietnamlıların savaş esirlerine cehennemi yaşattığı, 'Ateş Fırını' anlamına gelen bu devasa zindan. Giyotinle idam edilen devrimcilerin çığlıkları ve Amerikalı pilotların o boğucu umutsuzluğu, kalın beton duvarlardan saf bir anksiyete frekansı olarak sızarak nefesinizi keser.",5"Con Dao Hapishanesi (Kaplan Kafesleri)","Ba Ria - Vung Tau","Vietnam","Fransız ve Amerikan destekli rejimlerin, binlerce siyasi mahkumu yerin altındaki asit dökülen 'Kaplan Kafesleri'nde güneş yüzü görmeden sakat bırakıp öldürdüğü ada. Zifiri karanlık dehlizlerde gezinirken bedeninize saplanan o paslı işkence travması ve arafta kalanların o saf öfkesi auranızı paramparça eder.",5"Cu Chi Tünelleri (Ölüm Labirentleri)","Ho Chi Minh","Vietnam","Vietkong gerillalarının yıllarca yeraltında güneş görmeden yaşadığı ve binlerce Amerikan askerinin tuzaklarda feci şekilde can verdiği klostrofobik tünel ağı. Oksijensiz dehlizlerde sürünürken aniden ensenizde hissettiğiniz soğuk nefes ve yeraltına mühürlenmiş o devasa hayatta kalma/ölüm paniği iradenizi ezer.",5"727 Tran Hung Dao Binası","Ho Chi Minh","Vietnam","İnşaatı sırasında 4 bakire kızın kurban edilip temelindeki dört köşeye gömüldüğüne (kadim Feng Shui kara büyüsü) inanılan bu devasa, çürüyen apartman bloku. Terk edilmiş koridorlarda yankılanan meçhul fısıltılar ve o ritüelistik, saplantılı ölüm frekansı; binanın tamamen şeytani bir varlık tarafından ele geçirildiğini kanıtlar.",5"Da Lat Tepesindeki Perili Ev","Da Lat","Vietnam","Fransız sömürge döneminden kalma, izole bir çam ormanının kalbinde yer alan ve sahiplerinin gizemli şekilde katledildiği bu gotik Fransız villası. Kış gecelerinde boş pencerelerinden süzülen solgun bir kadın silüeti ve evden yayılan o devasa, melankolik intihar enerjisi; burayı Vietnam'ın en korkulan astral kapılarından biri yapar.",4"Thuan Kieu Plaza","Ho Chi Minh","Vietnam","Çin kara büyüsü yüzünden lanetlendiğine inanılan ve 'üç yanık tütsü' şeklinde tasarlanmış olan, hayaletlerle dolu devasa ve terk edilmiş gökdelen kompleksi. Tamamen ıssız olan bu devasa yapının koridorlarında yürürken hissettiğiniz o ağır izlenme duygusu ve mimarideki okült anomali, insanda şiddetli bir baş dönmesi yaratır.",4"Ba Vi Ulusal Parkı Harabeleri (Eski Fransız Kampı)","Hanoi","Vietnam","Ormanın derinliklerinde, doğanın vahşice yuttuğu eski bir Fransız kilisesi ve terk edilmiş askeri sığınaklar ağı. Sisin arasından aniden beliren yosun tutmuş haçların ve savaşta can veren askerlerin o arafta kalmış yalnızlık frekansının yarattığı bu alan, doğa elementallerinin insanı cezalandırdığı aktif bir vortextir.",4"Hue İmparatorluk Şehri (Yasak Şehir)","Hue","Vietnam","Tet Taarruzu sırasında binlerce insanın sokaklarında katledilip toplu mezarlara atıldığı, imparatorluğun o görkemli ama kana bulanmış başkenti. Geceleri yasak şehrin yıkıntılarında dolaşırken, eski imparatorların cariyeleriyle ve savaşta vahşice öldürülen sivillerin o devasa, toplumsal acısıyla yüzleşirsiniz.",5"Binh Hung Hoa Mezarlığı","Ho Chi Minh","Vietnam","Şehrin ortasında kalan ve on binlerce isimsiz mezarı barındıran, kentsel dönüşümle bir kısmı yıkıldığı için ruhların öfkeyle uyandığı devasa nekropol. Geceleri mezar taşlarının arasında beliren karanlık gölgeler ve yerinden edilen ölülerin o agresif, intikamcı frekansı; buraya girenlerin aurasını şiddetle sarsar.",4"Khai Dinh Mezarı","Hue","Vietnam","Avrupa gotik mimarisi ile Asya mistisizminin karanlık bir birleşimi olan ve zorla çalıştırılan halkın nefretini üzerine çeken bu siyah betonarme imparatorluk anıtı. Devasa ejderha heykellerinin arasından tırmanırken hissettiğiniz o aşırı kibirli, karanlık ve ezen imparatorluk frekansı, bedeninizi görünmez bir ağırlıkla ezer.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Vietnam kayitlari eklendi.")
