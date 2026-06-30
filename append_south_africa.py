@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Castle of Good Hope (Ümit Burnu Kalesi)","Cape Town","Güney Afrika","17. yüzyılda sömürgeciler tarafından inşa edilen ve ülkenin en eski yapısı olan bu devasa askeri kale. Karanlık zindanında (Donker Gat) penceresiz hücrelerde boğularak ölen kölelerin ve 'Lanetli Vali' Pieter Gijsbert Noodt'un o sülfürik, ağır keder frekansı duvarların içine tamamen mühürlenmiştir.",5"Kempton Park Terk Edilmiş Hastanesi","Johannesburg","Güney Afrika","1996 yılında aniden, içindeki milyonlarca dolarlık ekipmanla ve hasta kayıtlarıyla birlikte bir günde terk edilen devasa tıp merkezi. Çürüyen ameliyathanelerinde ve kapkaranlık morgunda gezinirken hissedilen o açıklanamayan yoğun radyasyon ve arafta kalmış hastaların çığlıkları zihninizi daraltır.",5"Constitution Hill Zindanları (Eski Fort)","Johannesburg","Güney Afrika","Apartheid (ırk ayrımcılığı) rejimi boyunca binlerce siyasi mahkumun vahşice dövülüp işkence gördüğü, 19. yüzyıldan kalma bu soğuk hapishane kompleksi. Zifiri karanlık izolasyon hücrelerinden taşan o devasa toplumsal travma ve asırlık keder enerjisi, buraya giren empatları anında gözyaşlarına boğar.",5"Ponte City Apartmanları (Karanlık Çekirdek)","Johannesburg","Güney Afrika","Afrika'nın en yüksek konut gökdeleni olan ancak 1990'larda çetelerin eline geçerek bir intihar ve cinayet merkezine dönüşen devasa beton silindir. Binanın devasa, boşluklu merkez çekirdeğinden (Core) aşağıya bakarken yükselen o hipnotik vertigo hissi ve çürüyen çöp yığınlarındaki ölüm enerjisi auranızı ezer.",4"Robben Adası Zindanları","Cape Town","Güney Afrika","Yüzyıllar boyunca cüzzamlılar kolonisi, akıl hastanesi ve son olarak da Nelson Mandela'nın yattığı maksimum güvenlikli siyasi hapishane olarak kullanılan o yalıtılmış ada. Okyanusun dondurucu rüzgarlarına karışan mahkum iniltileri ve adanın toprağına kazınmış olan o mutlak, yalnızlık dolu sömürü frekansı nefesinizi keser.",5"The Lord Milner Hotel","Matjiesfontein","Güney Afrika","Karoo Çölü'nün ortasında, 19. yüzyılda İngiliz aristokratları tarafından kurulan ve Boer Savaşı sırasında hastane olarak kullanılan Viktorya dönemi oteli. Koridorlarında kan öksüren eski askerlerin ayak sesleri yankılanırken, 19. yüzyılın o melankolik, sülfürik ölüm bekleme anksiyetesi üzerinize çöker.",4"Groot Constantia Malikanesi","Cape Town","Güney Afrika","Ülkenin en eski şarap çiftliklerinden biri olan ancak sömürge döneminin ağır kölelik acılarını barındıran bu devasa Hollanda malikanesi. Arazideki devasa meşe ağaçlarının gölgesinde yankılanan kırbaç şaklamaları ve efendisini arayan meçhul silüetlerin yaydığı o soğuk, rahatsız edici kolonist frekans ruhunuzu daraltır.",4"Nottingham Road Hotel","KwaZulu-Natal","Güney Afrika","Midlands Meander bölgesindeki en eski otellerden biri olan ve savaş zamanı askerlerin uğrak yeri olan bu tarihi yapı. Odanın balkonundan atlayarak intihar ettiği söylenen 'Charlotte' adlı kadının çarşafları düzeltmesi ve havada asılı kalan o derin, karşılıksız aşk ve intihar frekansı kalbinizi dondurur.",4"Uniondale (Hayalet Otostopçu Rotası)","Karoo","Güney Afrika","Issız çöl yollarında, 1968'de bir motosiklet kazasında ölen 'Maria' adındaki genç kızın sürekli belirdiği o upuzun, hipnotik asfalt. Gece yarısı arabanın arka koltuğunda aniden düşen sıcaklık ve havaya yayılan o keskin, arafta sıkışmış trafik kazası travması sürücüleri deliliğin eşiğine getirir.",4"Smuts House Museum","Pretoria","Güney Afrika","Eski Başbakan Jan Smuts'un evi olan ve yüksek siyasi sırlarla, savaş kararlarıyla dolu bu izole ahşap ve sac yapı. Gece olduğunda odalarda duyulan ağır askeri postalların sesi ve eşyaların yerinin değişmesiyle oluşan o otoriter, yoğun komuta frekansı; buranın zaman çizgisinin kırılarak geçmişe hapsolduğunu fısıldar.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Guney Afrika kayitlari eklendi.")
