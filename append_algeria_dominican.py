@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Kasbah Yeraltı Dehlizleri","Cezayir Şehri","Cezayir","Asırlardır korsanların, direnişçilerin ve suikastçilerin kullandığı, eski şehrin altındaki o devasa, zifiri labirent. Bağımsızlık savaşında işkenceyle öldürülen binlerce kişinin kanının aktığı bu dar, oksijensiz tünellerde ilerlerken, görünmez ellerin boğazınıza sarıldığını ve o ağır ölüm anksiyetesini hissedersiniz.",5"Tassili n'Ajjer (Uzaylı Kaya Resimleri)","Sahra Çölü","Cezayir","Sahra Çölü'nün derinliklerinde, binlerce yıllık tuhaf 'uzaylı' figürlerinin taşlara kazındığı o devasa, izole kaya plato. Gündüzün kavurucu sıcağından sonra gece çöktüğünde kumların yaydığı o ağır, zihin büken manyetik frekans; buranın hala insan dışı zekaların ziyaret ettiği bir portal olduğunu kanıtlar.",5"Serkadji Hapishanesi","Cezayir Şehri","Cezayir","Sömürge döneminden günümüze kadar sayısız idamın, giyotin infazının ve vahşi işkencelerin yaşandığı bu devasa cezaevi. Hapishanenin dış duvarlarına yaklaştığınızda bile, ölüm sırasını bekleyen mahkumların o paslı çaresizlik frekansı ve haksız yere ölenlerin araftaki o agresif, isyankar kederi ruhunuzu daraltır.",5"Bastion 23 (Palais des Rais)","Cezayir Şehri","Cezayir","Akdeniz'in kıyısında, eskiden korsanların ve Osmanlı reislerinin esirlerini tuttuğu bu tarihi saray. Karanlık mahzenlerinde okyanus dalgalarının sesiyle birbirine karışan kırbaç şaklamaları ve korsan esirlerinin asırlar öncesinden gelen o boğuk iniltileri, duvarlara simsiyah bir lanet gibi mühürlenmiştir.",4"Santa Cruz Kalesi ve Şapeli","Oran","Cezayir","Şehre tepeden bakan ve 19. yüzyıldaki korkunç kolera salgınından kurtulmak için inşa edilen Meryem Ana şapeliyle bütünleşen bu askeri kale. Salgında ölen binlerce insanın toplu acısı ve kalenin rüzgarlı taşlarında gezinirken ensenizde hissettiğiniz o sülfürik, ağır hastalık enerjisi empatları bayıltır.",4"Faro a Colón (Kolomb'un Feneri)","Santo Domingo","Dominik Cumhuriyeti","Kristof Kolomb'un kemiklerini barındırdığı iddia edilen, gökyüzüne devasa bir haç şeklinde ışık saçan bu devasa ve lanetli anıt-mezar. Efsaneye göre Taino yerlilerinin kanıyla mühürlenmiş olan bu yapının etrafında aniden fırtınaların kopması ve anıttan yayılan o karanlık, ezen fatih (conquistador) frekansı ürkütücüdür.",5"San Nicolás de Bari Harabeleri","Santo Domingo","Dominik Cumhuriyeti","Amerika kıtasının inşa edilmiş ilk hastanesinin devasa, sarmaşıkların yuttuğu bu gotik harabesi. Sömürge döneminde salgın hastalıklar ve korsan yaraları yüzünden can veren binlerce insanın o çürümüş keder enerjisi; taş kemerlerin arasından süzülen solgun hemşire silüetleriyle birleşerek insanı adeta zehirler.",4"Fortaleza Ozama (Ozama Kalesi)","Santo Domingo","Dominik Cumhuriyeti","Kıtanın en eski Avrupa kalesi olan ve asırlar boyunca zindanlarında korsanların, kölelerin, isyancıların zincire vurulduğu kanlı hisar. Karayip sıcağına rağmen zindanlarında hissedilen o dondurucu soğuk ve mahkumların duvarlara kazıdığı çaresizliğin yaydığı psişik fırtına, ruhunuzu bir mengene gibi sıkar.",5"Damajagua Voodoo Havuzları (27 Şelale)","Puerto Plata","Dominik Cumhuriyeti","Gündüzleri doğa harikası gibi görünen ancak gece çöktüğünde ormanın derinliklerinde Afro-Karayip Voodoo ayinlerinin yapıldığı iddia edilen bu gizli şelaleler silsilesi. Karanlık suların yaydığı o ilkel (primal) elementer enerji ve görünmez şamanların ormanda yankılanan davul ritimleri zihninizi transa sokar.",4"La Cueva de las Maravillas (Harikalar Mağarası)","San Pedro de Macorís","Dominik Cumhuriyeti","Kadim Taino yerlilerinin yüzlerce piktografik resim çizdiği, yeraltının yüzlerce metre altındaki devasa mağara sistemi. Suyun yansımalarında beliren yerli şamanların ruhları ve mağaranın o dışa kapalı, mutlak izolasyon frekansı; asırlar süren bir soykırımın sessiz çığlığını doğrudan çakralarınıza aktarır.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Cezayir ve Dominik Cumhuriyeti kayitlari eklendi.")
