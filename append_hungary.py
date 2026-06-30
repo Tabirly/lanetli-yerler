@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Budavári Labirintus (Buda Kalesi Labirenti)","Budapeşte","Macaristan","Kazıklı Voyvoda'nın (Vlad Tepeş) Kral Matyas tarafından yıllarca zifiri karanlığa hapsedildiği iddia edilen devasa yeraltı mağara sistemi. Işığın girmediği bu klostrofobik dehlizlerde ilerlerken, asırlar öncesinin o vampirik, sadistik ve kanlı frekansı auranızı sarar; yeraltının o boğucu enerjisi nefesinizi keser.",5"Boszorkánysziget (Cadılar Adası)","Szeged","Macaristan","1728'deki devasa cadı avında onlarca insanın kazıklara bağlanarak diri diri yakıldığı bu izole yarımada. Tisza Nehri'nin kıyısındaki bu karanlık ormanlık alanda, haksız yere katledilenlerin öfkesi toprağa siyah bir mühür gibi kazınmıştır; gece rüzgarına karışan o ateşin ve çığlıkların frekansı zihninizi sarsar.",5"Sziklakórház (Kayadaki Hastane)","Budapeşte","Macaristan","İkinci Dünya Savaşı ve Soğuk Savaş döneminde kayaların içine oyulmuş, binlerce yaralı askerin ve sivilin havasızlıktan, radyasyon korkusundan ve acıdan kıvranarak can verdiği nükleer sığınak hastanesi. Yeraltındaki eski koğuşlarda yankılanan ölüm hırıltıları ve o ezici, kaotik toplu travma enerjisi kalbinizi sıkıştırır.",5"Fekete-kastély (Kara Şato)","Balatonederics","Macaristan","Sahiplerinin, eşlerinin ve hatta çalışanlarının art arda intihar ettiği, lanetiyle meşhur çürüyen yapı. Balaton gölünün yakınlarındaki bu harabede, intiharın o saplantılı ve bulaşıcı ölüm frekansı adeta havada asılı durur; içeri girenlerin göğsüne açıklanamaz bir keder ve karamsarlık çöker.",5"Salamon Kulesi (Solomon Tower)","Visegrád","Macaristan","Tuna nehrine tepeden bakan, Orta Çağ'ın en acımasız ve sağlam hapishanelerinden biri. İşkence gören esirlerin ve burada yıllarca tecrit edilen mahkumların o paslı çaresizliği taşlara kan gibi işlemiştir; sarmal merdivenlerden yukarı çıkarken arkanızdan gelen görünmez zincir sesleri auranızı ürpertir.",4"Recsk Çalışma Kampı (Macar Gulag'ı)","Recsk","Macaristan","Komünist dönemde siyasi mahkumların ağır işkencelerden geçirilip taş ocaklarında köle gibi çalıştırılarak öldürüldüğü ölüm kampı. Toplama kampının yıkıntıları arasında dolaşırken, o devasa adaletsizliğin, açlığın ve kırılmış insan iradesinin yarattığı ağır izolasyon frekansı, ziyaretçilere fiziksel bir ağırlık olarak çöker.",5"Kerepesi Mezarlığı","Budapeşte","Macaristan","Avrupa'nın en büyük ve en gotik mezarlıklarından biri olan, devasa mermer heykellerin ve elit anıt mezarların bulunduğu alan. Sonbahar sisleri çöktüğünde ağlayan melek heykellerinin arasından süzülen şekilsiz kütleler ve o asil, melankolik aristokratik ölüm enerjisi, burayı aktif bir astral mezarlığa çevirir.",4"Gellért Hegy (Gellért Tepesi)","Budapeşte","Macaristan","Tarih boyunca pagan ritüellerinin yapıldığı ve halk efsanelerinde cadıların (Boszorkány) Şeytan'la buluşma noktası olarak bilinen bu sarp tepe. Şehre tepeden bakan bu karanlık ormanlık alanda gece dolaştığınızda, kadim okült enerjilerin uyandığını ve karanlığın içinden görünmez varlıkların sizi izlediğini hissedersiniz.",4"Sirok Kalesi","Sirok","Macaristan","Volkanik bir dağın zirvesine oyulmuş gizli yeraltı tünelleri ve sevdiği adamı kaybedince kendini kaleden aşağı atan kızıl saçlı Gizella'nın lanetiyle bilinen harabe. Gece rüzgarının kayalıklara çarparak çıkardığı o tiz çığlık benzeri sesler, asırlardır arafta kalan bu kederli dişil enerjiyi ruhunuza zerk eder.",4"Dél-pesti Kórház (Terk Edilmiş Hastane)","Budapeşte","Macaristan","Çürümeye terk edilmiş devasa bir hastane kompleksi. Psikiyatri ve yoğun bakım koğuşlarının o izole, ürkütücü koridorlarında gezinirken, aniden düşen sıcaklık ve eski asansör boşluklarından gelen boğuk iniltiler; buranın binlerce kırık zihnin ve bedenin yarattığı agresif bir poltergeist merkezine dönüştüğünü gösterir.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Macaristan kayitlari eklendi.")
