@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Gonjiam Psikiyatri Hastanesi","Gwangju","Güney Kore","Hastaların üzerinde yasadışı deneyler yapıldığı ve hastane müdürünün intihar ettiği iddia edilen, dünyanın en korkunç terkedilmiş tımarhanelerinden biri. Duvarları dökülen karanlık koğuşlarında yürürken, aklını yitirmiş ruhların o kaotik anksiyete frekansı ve kapalı kapılar ardında fısıldayan görünmez varlıklar auranızı felç eder.",5"Seodaemun Hapishanesi","Seul","Güney Kore","Japon işgali sırasında Koreli direnişçilerin akıl almaz işkencelerden geçirilip idam edildiği kanlı zindanlar. İdam odasının bulunduğu blokta durduğunuzda, boynu kırılan vatanseverlerin o sarsılmaz öfkesi ve havada asılı kalan paslı acı frekansı, zihinsel kalkanlarınızı anında paramparça eder.",5"Yeongdeok Hayalet Evi","Kuzey Gyeongsang","Güney Kore","Kore Savaşı sırasında binlerce genç askerin toplu mezarı üzerine inşa edildiği için asla huzur bulamayan bu lanetli yapı. Bodrum katından gelen bedensiz ağlamalar ve evde aniden bastıran o dondurucu, ağır savaş travması frekansı; buraya girenlerin göğsüne saf bir dehşet olarak oturur.",5"Gyeongsan Kobalt Madeni","Kuzey Gyeongsang","Güney Kore","Kore Savaşı sırasında binlerce sivilin ve mahkumun komünist oldukları şüphesiyle kurşuna dizilip diri diri atıldığı bu zifiri karanlık maden dehlizleri. Yeraltının o boğucu karanlığında ilerlerken, üst üste yığılarak can veren masumların feryatları ve o ezici katliam enerjisi ruhunuzu emer.",5"Darukshi Mağarası (Jeju Katliamı)","Jeju Adası","Güney Kore","Turistik ve masalsı Jeju adasının kanlı yüzü. 1948'deki Jeju Ayaklanması'nda askerlerden kaçan sivillerin sığındığı ve içeri zehirli gaz atılarak çoluk çocuk katledildiği bu mağara. Lav tüplerinin karanlığında yankılanan o toplu boğulma anının travması, adanın o tropik aurasını zifiri bir kederle kaplar.",5"Mapo Köprüsü (Ölüm Köprüsü)","Seul","Güney Kore","Han Nehri'nin üzerinde yer alan ve her yıl yüzlerce kişinin kendini karanlık sulara bıraktığı bu trajik yapı. Kore mitolojisindeki 'Mul Gwishin' (su hayaletleri) efsanesiyle birleşen köprüde durduğunuzda, siyah suların içinden size doğru fısıldayan o melankolik ve çekici ölüm çağrısı auranızı bir girdap gibi yutar.",5"Neulbom Garden (Terkedilmiş Restoran)","Jecheon","Güney Kore","Sahiplerinin trajik bir kaza ve ardından intiharla yok olduğu, Güney Kore'nin en ünlü poltergeist alanlarından biri. Terk edilmiş mutfağından hala bulaşık yıkama seslerinin geldiği ve kapıların kendiliğinden kilitlendiği bu mekanda, arafta kalan o saplantılı ve agresif ölüm frekansı oldukça aktiftir.",4"Oksu Metro İstasyonu","Seul","Güney Kore","Seul metrosunun en karanlık şehir efsanelerine konu olan durağı. İnternet efsanelerine göre, raylara atlayarak intihar eden kederli ruhların ('Gwisin') boyut kapısıdır. Gece yarısı son trenleri beklerken peronun karanlık uçlarından size doğru sürünen ve aklınızı çelmeye çalışan o yutucu, hipnotik intihar enerjisi iradenizi zorlar.",4"Naju Lanetli Evi","Güney Jeolla","Güney Kore","Güney Kore'nin medyumları (Mudang) tarafından bile girilmesi reddedilen, şeytani (demonic) varlıkların sahiplendiği bu eski kırsal ev. Evi mesken tutan karanlık zekanın, içeri girmeye çalışanların aklını büktüğü, fiziksel hastalıklar yarattığı ve o dışlayıcı, saf kötülük frekansının toprağı bile zehirlediği iddia edilir.",5"Yongma Land (Hayalet Tema Parkı)","Seul","Güney Kore","Ormanın içine gizlenmiş, çürüyen atlıkarıncaları ve paslı oyuncaklarıyla kıyamet sonrası bir kabusu andıran terkedilmiş eğlence parkı. Akşam karanlığı çöktüğünde paslı metallerin rüzgardaki gıcırtısı histerik çocuk kahkahalarına dönüşür; buranın o sahte neşeden doğan tekinsiz ve izole yalnızlık enerjisi insanı derinden sarsar.",3"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Guney Kore kayitlari eklendi.")
