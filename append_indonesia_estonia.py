@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Lawang Sewu (Bin Kapı)","Semarang","Endonezya","Hollanda sömürge döneminde inşa edilen, İkinci Dünya Savaşı'nda Japonların bodrum katlarını acımasız bir zindana ve infaz alanına çevirdiği bu devasa yapı. 'Kafası Kesik Hollandalı Kadın' efsanesinin kalbi olan bu mekanda, kanlı infazların yaşandığı bodrum katından yayılan o devasa, ezici ölüm frekansı nefesinizi keser.",5"Trunyan Köyü (Açık Mezarlık)","Bali","Endonezya","Batur Yanardağı'nın eteklerinde, ölülerin gömülmek veya yakılmak yerine bambu kafesler içinde ormanın zemininde çürümeye terk edildiği antik bir izole yerleşke. Taru Menyan ağaçlarının maskelediği cesetlerin arasında dolaşırken, bedenin doğaya dönüşünün o çıplak, ilkel ve ağır nekromantik enerjisi ruhunuzu adeta ezer.",5"Menara Saidah Kulesi","Cakarta","Endonezya","Antik Roma mimarisiyle inşa edilmiş ancak temeli eğri olduğu için devasa bir hayalet gökdelene dönüşmüş bu lüks plaza. Yeraltı otoparklarında ve asansör boşluklarında yankılanan açıklanamayan çığlıklar ile Cava kara büyüsüne (Kuntilanak) atfedilen o yutucu, kaotik dişil enerji binayı tamamen ele geçirmiştir.",4"Taman Festival Hayalet Tema Parkı","Sanur (Bali)","Endonezya","Devasa bir timsah parkı ve eğlence merkezi olarak tasarlanan ancak iflas edip doğanın vahşice yuttuğu bu paslı çelik cehennemi. Vahşi doğaya salınan yamyam timsahların efsaneleri ve Bali adasının o yoğun ruhani orman elementallerinin terk edilmiş yapılara çöken o agresif, dışlayıcı frekansı ürperticidir.",4"Jeruk Purut Mezarlığı","Cakarta","Endonezya","Başsız bir rahibin siyah köpeğiyle birlikte kendi kesik başını aradığı o karanlık, gotik efsanenin merkezi olan devasa nekropol. Gece yarısı mezarların arasında 7 kez tur atanların hissettiği o ani sıcaklık düşüşü ve ensenizde kilitlenen o saplantılı, lanetli arayış frekansı empatları paniğe sürükler.",4"Patarei Deniz Hapishanesi","Tallinn","Estonya","Kızıl Ordu'nun sayısız muhalifi zifiri karanlık hücrelerde çürütüp, deniz suyuyla dondurarak işkence ettiği bu devasa Sovyet kabusu. Paslı demir kapıların ve kanlı ameliyathanelerin (psikolojik işkence odalarının) bulunduğu o klostrofobik dehlizlerden yayılan mutlak devlet terörü ve çaresizlik enerjisi insanı adeta yutar.",5"Rummu Su Altı Hapishanesi","Rummu","Estonya","Sovyet döneminde mahkumların ölümüne çalıştırıldığı bir taş ocağı iken, suların aniden basmasıyla terk edilen binaların yarı batık olduğu o izole, turkuaz felaket. Suyun altındaki paslı tel örgülerin ve çürüyen yapıların oluşturduğu o boğucu, sessiz sualtı mezarlığı frekansı; zihninize ağır bir su basıncı gibi oturur.",5"KGB Zindanları (Pagari 1 Binası)","Tallinn","Estonya","Estonya tarihinin en kanlı ve psikolojik olarak en yıkıcı sorgularının yapıldığı, başkentin kalbindeki o meşum binanın penceresiz bodrum katı. Duvarların ardında hapsedilmiş o 'karanlıkta çıldırtma' travması ve ensesinden vurulan masumların arafta kilitli kalan o saf korku frekansı kalbinizi dondurur.",5"Rakvere Kalesi (İşkence Zindanları)","Rakvere","Estonya","Orta Çağ barbarlığının tüm karanlık aletlerini barındıran ve asırlarca kanlı Livonya savaşlarına sahne olan devasa kale harabesi. Karanlık ve rutubetli zindanlarında dolaşırken taşlara sinmiş o ilkel, vahşi acı çektirme sanatı ve etinizi kesecek kadar yoğun olan o saf, sülfürik Orta Çağ ölüm enerjisi ruhunuzu kanatır.",4"Haapsalu Kalesi (Beyaz Kadın)","Haapsalu","Estonya","Ağustos ayındaki dolunaylarda, kilise şapelinin pencerelerinde beliren ve katedralin duvarlarına canlı canlı örülen o meşhur 'Beyaz Kadın'ın kederli mekanı. Denizden esen dondurucu rüzgarların getirdiği o derin, aşılamayan aşk hüznü ve duvarlardan sızan o çaresiz, saplantılı kadın frekansı zaman algınızı dondurur.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Endonezya ve Estonya kayitlari eklendi.")
