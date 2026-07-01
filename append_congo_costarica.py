@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Virunga Ormanları (Karanlık Sınır)","Kuzey Kivu","Kongo","Milis güçlerin, kaçakçıların ve yaban hayatının kanlı çatışmalarına asırlardır sahne olan, dünyanın en eski ama en tehlikeli milli parkı. Devasa, sisli ağaçların arasında yankılanan o ağır, ilkel Afrika kara büyüsü (Voodoo/Muti) ve paramparça edilen koruyucuların araftaki orman öfkesi auranızı felç eder.",5"Mai-Ndombe Gölü (Kara Büyü Suları)","Mai-Ndombe","Kongo","Adı yerel dilde 'Kara Büyü Suları' anlamına gelen ve tarih boyunca açıklanamayan sayısız fırtına ile kitlesel gemi batıklarına sebep olan devasa, kapkaranlık göl. Suların altından yükselen o ağır, çekici 'Mami Wata' (Su Ruhu) frekansı ve derinlikte boğulan binlerce kurbanın toplu kederi insanı adeta dibe çeker.",5"Eski Leopoldville Koloni Zindanları","Kinşasa","Kongo","Belçika Kralı II. Leopold'un kauçuk tarlalarında milyonlarca yerliyi ellerini keserek katlettiği o karanlık sömürge döneminin kanlı sorgu merkezleri. Rutubetli beton duvarlardan yayılan o devasa, ezici Afrika soykırımı travması ve kilitli kapıların ardında fısıldayan saf keder zihninizi daraltır.",5"Gecamines Terk Edilmiş Madenleri","Katanga","Kongo","Yerin kilometrelerce altına inen, sömürülen yerel işçilerin mağaralarda oksijensizlikten ve maden göçüklerinden can verdiği devasa karanlık labirent. Çökmüş tünellerin ucundan süzülen o ağır, sülfürik ölüm bekleme anksiyetesi ve toprak altı cinlerinin çıkardığı çekiç sesleri klostrofobinize doğrudan saldırır.",4"Kinsuka Nehir Girdapları","Kongo Nehri","Kongo","Afrika'nın en güçlü ve en tehlikeli nehirlerinden birinin ölümcül akıntılara ve anaforlara dönüştüğü o hipnotik su geçidi. Kayalıklara çarparak parçalanan sayısız teknenin lanetiyle dolup taşan bu karanlık sularda, doğanın o acımasız ve yutucu ilkel frekansı nefesinizi tamamen keser.",4"Sanatorio Durán (Terk Edilmiş Verem Hastanesi)","Cartago","Kosta Rika","Volkanik bir dağın eteklerinde 1918'de kurulan ancak salgın hastalıklar, intiharlar ve çıldırma vakalarıyla kapatılan o devasa, çürümüş tıp merkezi. Sisli gecelerde boş koğuşlardan gelen hastalıklı çocuk öksürükleri ve rahibelerin duvarlara sinmiş o soğuk, rahatsız edici nezaret enerjisi ruhunuzu dondurur.",5"San Lucas Adası Zindanları","Puntarenas","Kosta Rika","Kosta Rika'nın 'Alcatraz'ı olarak bilinen, yüz yılı aşkın süre boyunca en tehlikeli suçluların adeta birer hayvan gibi kafeslerde tutulup birbirini parçaladığı o vahşi cezaevi adası. Yosun tutmuş hücre duvarlarında kanla yazılmış yazılar ve zindanları tamamen kaplayan o saf, psikopatik cinayet frekansı auranızı ezer.",5"Cartago Kilise Harabeleri (Las Ruinas)","Cartago","Kosta Rika","Asla tamamlanamayan, çünkü her inşa edilmeye çalışıldığında bölgeyi vuran devasa depremlerle yıkılan o 'Tanrı'nın reddettiği' kilise kalıntısı. Sütunların arasında esen rüzgarda, kardeşini burada öldüren efsanevi rahibin yaydığı o ağır, lanetli kardeş katli anksiyetesi ve Katolik kederi gizlidir.",4"Guayabo Antik Şehri","Turrialba","Kosta Rika","İspanyol istilacılar bile gelmeden çok önce aniden ve gizemli bir şekilde sakinleri tarafından tamamen terk edilen, ormanın derinliklerindeki bu kayıp antik şehir. Taş su yollarının ve dairesel tapınakların etrafında gezinirken, doğanın yuttuğu o kadim şamanik büyü ve ağır elementer frekans sizi transa sokar.",4"Terk Edilmiş Moreno Cañas Hastanesi","San José","Kosta Rika","Ünlü bir cerrahın kendi kliniğinde vahşice suikasta kurban gitmesinin ardından lanetlendiği söylenen ve tıbbi deneylerin karanlık fısıltılarını taşıyan eski koğuşlar. Gece karanlığında kırık pencerelerden sızan ay ışığıyla beliren gölge ameliyatlar ve kloroform kokusuna karışan o derin ölüm paniği insanı felç eder.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Kongo ve Kosta Rika kayitlari eklendi.")
