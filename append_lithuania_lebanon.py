@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Haçlar Tepesi (Kryžių Kalnas)","Šiauliai","Litvanya","Üzerinde 100 binden fazla haçın bulunduğu, Sovyet dozerlerinin defalarca ezip geçmesine rağmen halkın geceleri tekrar diktiği devasa ve kutsal tepe. Sisli gecelerde rüzgarın binlerce metal ve ahşap haça çarparak çıkardığı o kederli, fısıltılı ninniler ve inancın yarattığı o ezici, kadim enerji auranızı felç eder.",4"Eski KGB Zindanları (Soykırım Müzesi)","Vilnius","Litvanya","Vilnius'un merkezinde yer alan, Sovyet ve Nazi işgalleri boyunca binlerce muhalifin işkence görüp bodrum katında infaz edildiği o korkunç karargah. İnfaz odasının kan sıçramış duvarlarından sızan o saf devlet terörü ve buz gibi hücrelerde arafta kalan kurbanların yaydığı mutlak dehşet frekansı empatları bayıltır.",5"Ninth Fort (Dokuzuncu Kale)","Kaunas","Litvanya","Nazi işgali sırasında on binlerce insanın kurşuna dizildiği ve devasa toplu mezarların bulunduğu bu acımasız ve devasa beton kale kompleksi. Ölüm tünellerinde yankılanan ayak sesleri ve duvarlara tırnaklarla kazınmış o son çaresizlik feryatları; buranın sadece bir anıt değil, aktif bir araf olduğunu kanıtlar.",5"Villa Anapilis (Ruh Çağırma Köşkü)","Palanga","Litvanya","19. yüzyılda Kontes Sofija Tiškevičienė'nin inşa ettirdiği ve gizli odalarında sürekli ölülerle iletişim (séance) kurduğu bu ahşap, ürkütücü malikane. Geceleri rüzgarın kontesin özel yaptırdığı rüzgar orglarından çıkardığı o bedensiz iniltiler ve binanın ahşabına sinmiş olan o ağır, ruhani çekim gücü zihninizi daraltır.",4"Trakai Adası Kalesi","Trakai","Litvanya","Gölün ortasındaki bir adaya inşa edilen, asırlar boyunca Teutonik Şövalyeleri'nin kanlı saldırılarına ve kraliyet suikastlarına sahne olan gotik hisar. Zifiri karanlık suların üzerinden kaleye vuran siste beliren meçhul şövalye silüetleri ve kulelerde yankılanan Orta Çağ hüznü sizi doğrudan geçmişe hapseder.",4"Terk Edilmiş Grand Aley Oteli","Aley","Lübnan","Bir zamanlar Orta Doğu'nun en lüks oteliyken, 15 yıllık kanlı iç savaşta keskin nişancıların ve işkencecilerin karargahına dönüşen o devasa, kurşun deşikli harabe. Boş asansör boşluklarından yükselen o taze savaş travması ve otel odalarında infaz edilen kurbanların yaydığı sülfürik keder auranızı paramparça eder.",5"Beit Beirut (Sarı Ev - Ölüm Evi)","Beyrut","Lübnan","İç savaş sırasında Yeşil Hat üzerinde bulunan ve stratejik konumu nedeniyle milislerin en acımasız keskin nişancı yuvasına (sniper nest) dönüştürdüğü o delik deşik ev. Duvarlara yazılmış son mesajlar ve kum torbalarının ardında pusuya yatanların toprağa mühürlediği o saf, paranoyak cinayet frekansı nefesinizi keser.",5"Asfouriyeh Terk Edilmiş Akıl Hastanesi","Hazmieh","Lübnan","Lübnan'ın en eski psikiyatri merkezi olan ancak iç savaşın kaosuyla aniden terk edilip hastaların kaderine bırakıldığı o devasa, orman içindeki çürük koğuşlar. Elektroşok odalarında ve yıkık tecrit hücrelerinde yankılanan görünmez feryatlar ve havaya asılı kalan o mutlak, yalnızlık dolu delilik frekansı ruhunuzu ezer.",5"Baalbek Harabeleri (Jüpiter Tapınağı)","Bekaa Vadisi","Lübnan","Dünyanın en büyük yekpare taş bloklarını (Trilithon) barındıran ve yerel efsanelere göre insanlar tarafından değil, Kral Süleyman'ın emrindeki 'Cinler' tarafından inşa edilen devasa antik kompleks. Geceleri megalitlerin arasında gezinirken o taşların yaydığı ağır, insanüstü boyut anomalisi ve kadim pagan frekansı sizi transa sokar.",4"Cebel-i Lübnan (Büyük Kıtlık Mezarları)","Cebel-i Lübnan","Lübnan","Birinci Dünya Savaşı sırasında bölge nüfusunun yarısının açlıktan ve hastalıktan sokaklarda can verdiği o devasa ve trajik 'Kafno' kıtlığının yaşandığı dağlık köyler. Issız dağ yollarında geceleri esen rüzgarın taşıdığı o devasa, kitlesel açlık kederi ve isimsiz toplu mezarlardan sızan o ölüm bekleyişi kalbinizi dondurur.",5"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Litvanya ve Lubnan kayitlari eklendi.")
