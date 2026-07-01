@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Eski Changi Hastanesi (Japon Savaş Kampları)","Changi","Singapur","İkinci Dünya Savaşı sırasında Japon ordusunun acımasız işkence ve infaz merkezi (Kempeitai) olarak kullandığı, şu an ormanın yuttuğu çürümüş devasa kompleks. Karanlık morglarından ve dar, penceresiz hücrelerinden yayılan o devasa, kanlı savaş travması ve işkence gören askerlerin kesintisiz feryatları ruhunuzu ezer.",5"Bukit Brown Eski Mezarlığı","Singapur Merkez","Singapur","Ağaç köklerinin sardığı yüz binlerce geleneksel Çin mezarıyla dolu olan ve içinden otoyol geçirilmek için sayısız mezarın tahrip edildiği o kadim, yoğun orman nekropolü. Gece yarısı eski ataların saygısızlığa uğrayan araftaki ruhları ve ağaçların arasından süzülen dişil 'Pontianak' silüetleri auranızı felç eder.",5"St John's Adası (Karantina Zindanları)","Güney Adaları","Singapur","19. yüzyılın sonlarında kolera ve cüzzam hastalarının tecrit edildiği, ardından siyasi mahkumlar için zindan olarak kullanılan izole ada. Yıkık, rutubetli karantina koğuşlarında gezinirken okyanus rüzgarına karışan hastalıklı öksürükler ve o mutlak, yalıtılmış çaresizlik frekansı zihninizi daraltır.",4"Bedok Blokları (Lanetli Daireler)","Bedok New Town","Singapur","1980'lerde art arda yaşanan ürkütücü anne-çocuk cinayetleri ve yüksek katlardan atlama intiharlarıyla tamamen lanetlendiğine inanılan devasa beton apartman blokları. Geceleri boş asansör şaftlarından duyulan çocuk ağlamaları ve binaların içine mühürlenmiş o ağır, sülfürik intihar anksiyetesi nefesinizi keser.",4"Pasir Ris Parkı (Pontianak Bataklıkları)","Pasir Ris","Singapur","Gündüzleri huzurlu bir sahil parkı gibi görünse de geceleri eski mangrov bataklıklarının karanlık enerjisini uyandıran ve çok sayıda cinayet/intihara sahne olan devasa park. Sisli patikalarda gezerken arkanızdan gelen ağır bir frangipani (yasemin) kokusu ve ensenize kilitlenen vampirik 'Pontianak' varlığı insanı delirtir.",4"Ćele Kula (Kafatası Kulesi)","Niš","Sırbistan","1809 yılında Osmanlı ordusunun Sırp isyancılara ibret olsun diye doğrudan 952 isyancının kesik başından ve kafatasından inşa ettiği o tüyler ürpertici anıt kule. Taş ve harç yerine insan kemikleriyle örülmüş bu duvarların karşısına geçtiğinizde, o donuk göz çukurlarından fışkıran saf, katıksız savaş dehşeti sizi yutar.",5"Belgrad Yeraltı Katakompları ve Sığınakları","Belgrad","Sırbistan","Asırlar boyunca Romalılar, Osmanlılar ve Naziler tarafından kullanılmış, şehrin altını bir ağ gibi saran oksijensiz, kapkaranlık devasa tünel labirenti. İşkence odalarından yansıyan o ağır, sülfürik yeraltı frekansı ve kaybolup giden kurbanların taşlara sinmiş yalnızlık çığlıkları klostrofobiyi tetikler.",5"Petrovaradin Kalesi Yeraltı Zindanları","Novi Sad","Sırbistan","Tuna Nehri kıyısında yükselen ve 16 kilometre uzunluğunda karmaşık yeraltı savunma tünellerine sahip, asırlarca kuşatmalarda kanla yıkanmış devasa hisar. Işığın girmediği bu nemli tünellerin ('Kontraminski Sistem') derinliklerine indikçe yolların bilerek daralması ve karanlıkta bekleyen o askeri panik enerjisi auranızı sarsar.",4"Djavolja Varos (Şeytanın Kasabası)","Kuršumlija","Sırbistan","Ormanın içinde aniden yükselen, şeytani şapkaları andıran yüzlerce tuhaf toprak piramidinden oluşan bu kan kırmızısı vadi. Yerel efsaneye göre lanetlenip taşa çevrilmiş ensest bir düğün alayı olan bu sütunların arasında, rüzgarın o kayalara çarparak çıkardığı o tiz, şeytani çığlıklar sizi tamamen transa sokar.",4"Rtanj Dağı (Manyetik Anomali Piramidi)","Karpat Dağları","Sırbistan","Kusursuz bir piramit şeklinde yükselen, pusulaları bozan manyetik anomalileri, UFO efsaneleri ve II. Dünya Savaşı'nda Nazilerin okült araştırmalarıyla ünlü devasa dağ. Zirvesinde durduğunuzda yeraltından gelen o devasa, mekanik titreşimler ve doğaüstü boyutsal kırılma hissi zihninizi gerçeklikten koparır.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Singapur ve Sirbistan kayitlari eklendi.")
