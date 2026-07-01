@@ -1,0 +1,21 @@
+import csv
+import re
+import io
+
+data = """"Badagry Köle Limanı (Geri Dönüşü Olmayan Yol)","Lagos","Nijerya","Milyonlarca Afrikalının zincirlere vurularak gemilere bindirildiği ve bir daha asla evlerini göremediği o karanlık sahil şeridi ve hücreler. Okyanus rüzgarıyla birlikte kumların altından yükselen o devasa, ezici kitlesel kölelik hüznü ve koparılmış ailelerin feryatları auranızı tamamen paramparça eder.",5"Arochukwu Uzun İlah (Long Juju) Mağarası","Abia","Nijerya","Asırlar boyunca kabile savaşlarında esir düşenlerin yargılandığı, kurban edildiği veya köle olarak satıldığı o zifiri karanlık yeraltı labirenti. Nehir sularının aktığı bu mağaranın derinliklerinde yankılanan ilkel Yoruba kara büyü (Juju) frekansı ve kanlı kurbanların arafta kalan ruhları sizi transa sokar.",5"Osun-Osogbo Kutsal Ormanı","Osun","Nijerya","Yoruba inancının nehir tanrıçası Osun'a adanmış, ürkütücü ağaç heykelleri ve kadim tapınaklarla dolu bu devasa, geçilmez balta girmez orman. Sık ağaçların arasından süzülen o yoğun, elementer orman cinlerinin varlığı ve havaya asılı kalan o ağır Afrika animizm enerjisi zihninizi daraltır.",4"Ogbunike Mağaraları","Anambra","Nijerya","Eski zamanlarda kabile savaşlarından kaçanların sığındığı ancak aynı zamanda karanlık ruhani ritüellerin de gerçekleştirildiği bu geniş kireçtaşı mağara ağı. Ayakkabısız girilmesi zorunlu olan bu dehlizlerde yer altı nehrinin çıkardığı boğuk uğultular ve tünellere mühürlenmiş o izole, ilkel panik nefesinizi keser.",4"Abeokuta Olumo Kayalığı","Abeokuta","Nijerya","19. yüzyıldaki kanlı kabile savaşları sırasında binlerce savaşçının sığındığı ve arazisinde hala insan kurban edilen o devasa, siyah monolitik kaya. Zirveden esen rüzgarla birlikte etrafa yayılan o taze savaş kanı travması ve kayanın içine gizlenmiş şamanik güçler empatları fiziksel olarak sarsar.",4"Buhara Ark Kalesi (Böcek Zindanı / Zindan-i Tarik)","Buhara","Özbekistan","Buhara Emirliği'nin, içine atılan esirleri zehirli böcekler ve akreplerle canlı canlı yedirerek işkence ettiği o ünlü ve iğrenç yer altı kuyusu. Işığın girmediği bu rutubetli zindanlara baktığınızda, etleri canlı canlı koparılan kurbanların yaydığı o saf, akıl almaz işkence ve delilik frekansı ruhunuzu ezer.",5"Kızılkum Çölü (Hayalet Kervanlar)","Buhara Yakınları","Özbekistan","İpek Yolu'nun bu kavurucu ve acımasız çölünde susuzluktan ölen binlerce tüccarın, devenin ve kervanın kemiklerinin yattığı o uçsuz bucaksız kum denizi. Gece yarısı rüzgarla birlikte duyulan görünmez çan sesleri ve kum cinlerinin (İfrit) yarattığı ağır, yutucu serap enerjisi zihninizi bulandırır.",5"Şah-ı Zinda Nekropolü (Yaşayan Kral Mezarlığı)","Semerkant","Özbekistan","Bin yılı aşkın süredir kraliyet ailesinin ve dini liderlerin gömüldüğü, masmavi çinilerle kaplı bu devasa, dar ve gotik İslam mezarlığı sokağı. Geceleri çinilerin üzerinden yansıyan ay ışığıyla birlikte, yeraltındaki o devasa, kadim Orta Asya tasavvufi çekim gücü ve ölüm sessizliği sizi yutar.",4"Çarvak Gölü (Batık Köyler)","Taşkent Vilayeti","Özbekistan","Sovyet döneminde baraj inşası için sular altında bırakılan ve yerel halkın zorla sürüldüğü köylerin, camilerin ve mezarlıkların bulunduğu devasa göl. Sisli sabahlarda suyun derinliklerinden gelen o ritmik, boğuk ezan sesleri ve köklerinden koparılan araftaki köylülerin melankolisi insanı dibe çeker.",4"Ugam-Çatkal Terk Edilmiş Sovyet Üsleri","Taşkent Vilayeti","Özbekistan","Sarp dağların arasında, Sovyetlerin aniden terk ettiği devasa beton sığınaklar ve gizli araştırma tesislerinin bulunduğu çürümüş vahşi doğa. Paslı demir kapıların ardından esen rüzgarın çıkardığı o mekanik uğultu ve Soğuk Savaş paranoyasının toprağa işlediği o yalıtılmış devlet sırrı frekansı nefesinizi keser.",4"""
+
+# Split by fixing the missing newline before a quote after a number
+formatted_data = re.sub(r'(\d)"', r'\1\n"', data)
+
+reader = csv.reader(io.StringIO(formatted_data))
+with open('perili_mekanlar.csv', 'a', encoding='utf-8', newline='') as f:
+    writer = csv.writer(f)
+    for row in reader:
+        # Avoid empty lines
+        if not row:
+            continue
+        if len(row) == 5:
+            row.append('') # resim_url
+        writer.writerow(row)
+
+print("Nijerya ve Ozbekistan kayitlari eklendi.")
